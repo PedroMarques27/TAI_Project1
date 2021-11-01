@@ -1,13 +1,13 @@
 import re, copy
 from typing import Text
-
+import sys
 from random import random
 
 class FcmClass:
 
     def getExpressions(self):
         # remove all but words and spaces
-        cleanData =self.data.lower()
+        cleanData = re.sub(r'[^a-zA-Z ]+', '', self.data).lower()
         cleanData = re.sub("\s\s+", " ", cleanData)
         
         self.contextTable = {}
@@ -34,17 +34,16 @@ class FcmClass:
 
         return self.contextTable
 
+    def calc_table_space(self):
+        a_size = len(self.alphabet)
+        return (a_size ** self.k) * a_size * 16 / 8 / 1024 / 1024
 
     def calculateProbabilityTable(self):
         self.probabilitiesTable = copy.deepcopy(self.contextTable)
         for expression in self.contextTable:
-            total = 0;
-            for char in self.contextTable[expression]:
-                total+=self.contextTable[expression][char]
-
+            total = sum(self.contextTable[expression].values())
             for char in self.contextTable[expression]:
                 occurences = self.contextTable[expression][char]
-        
                 self.probabilitiesTable[expression][char] = (occurences + self.a) / (total + (self.a * len(self.probabilitiesTable[expression])))
         
         
@@ -63,12 +62,13 @@ class FcmClass:
  
         selectedChar = random()
         initialValue = 0
-        # print(selectedChar)
+        #print(selectedChar)
         if expression not in self.probabilitiesTable:
             self.probabilitiesTable[expression]= dict.fromkeys(self.alphabet, (self.a) / ((self.a * len(self.alphabet)))) 
+        
         # print(sorted(self.probabilitiesTable[expression]))
         for char in sorted(self.probabilitiesTable[expression]):
-            #print(char +"+= " + str(initialValue) + ", " +str(initialValue+self.probabilitiesTable[expression][char]))
+            # print(char +"+= " + str(initialValue) + ", " +str(initialValue+self.probabilitiesTable[expression][char]))
             if initialValue<=selectedChar < initialValue+self.probabilitiesTable[expression][char]:
                 return char
             initialValue+= self.probabilitiesTable[expression][char]
