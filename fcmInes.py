@@ -1,80 +1,82 @@
 import re, copy
 from typing import Text
 
-def getExpressions(data, k):
-    # remove all but words and spaces
-    cleanData = re.sub(r'[^a-zA-Z ]+', '', data).lower()
-    cleanData = re.sub("\s\s+", " ", cleanData)
-    
-    expressionsDic = {}
-    alphabet = list(set(cleanData))
+from random import random
 
-    # pass through all the characters and insert every 3 in the dict 
-    # along with the next character and the times they appear
-    
-    # TODO adicionar as letras finais
-    for i in range(len(cleanData)-k):
-        expression = cleanData[i:i+k]
+class FcmClass:
+
+    def getExpressions(self):
+        # remove all but words and spaces
+        cleanData =self.data.lower()
+        cleanData = re.sub("\s\s+", " ", cleanData)
         
-        if expression in expressionsDic.keys():
-            if cleanData[i+k] in expressionsDic[expression]:
-                expressionsDic[expression][cleanData[i+k]] += 1   
+        self.contextTable = {}
+        self.alphabet = list(set(cleanData))
+
+        # pass through all the characters and insert every 3 in the dict 
+        # along with the next character and the times they appear
+        
+        # TODO adicionar as letras finais
+        for i in range(len(cleanData)-self.k):
+            expression = cleanData[i:i+self.k]
+            
+            if expression in self.contextTable.keys():
+                if cleanData[i+self.k] in self.contextTable[expression]:
+                    self.contextTable[expression][cleanData[i+self.k]] += 1   
+                else:
+                    self.contextTable[expression][cleanData[i+self.k]] = 1   
             else:
-                expressionsDic[expression][cleanData[i+k]] = 1   
-        else:
-            expressionsDic[expression] = dict.fromkeys(alphabet, 0)
-            expressionsDic[expression][cleanData[i+k]] = 1
+                self.contextTable[expression] = dict.fromkeys(self.alphabet, 0)
+                self.contextTable[expression][cleanData[i+self.k]] = 1
+            
         
-    
-    # print(str(expressionsDic))
+        # print(str(expressionsDic))
 
-    return expressionsDic
+        return self.contextTable
 
 
-def calculateProbability(dictionary, a):
-    probabilities = copy.deepcopy(dictionary)
-    for expression in dictionary:
-        total = 0;
-        for char in dictionary[expression]:
-            total+=dictionary[expression][char]
+    def calculateProbabilityTable(self):
+        self.probabilitiesTable = copy.deepcopy(self.contextTable)
+        for expression in self.contextTable:
+            total = 0;
+            for char in self.contextTable[expression]:
+                total+=self.contextTable[expression][char]
 
-        for char in dictionary[expression]:
-            occurences = dictionary[expression][char]
-     
-            probabilities[expression][char] = (occurences + a) / (total + (a * len(probabilities[expression])))
-
-    
-    
-def generateText(expressionsDic, k):
-    text = list(expressionsDic.keys())[0]
-    
-    # print(text)
-    i = 0
-    while i < 500:
-        i += 1
-        lastKcharacters = text[-k:]
-        dictMatch = expressionsDic[lastKcharacters] # returns dict
-        # maxValue = max(dictMatch.values())
-        maxKey = max(dictMatch, key=dictMatch.get)
-        text += maxKey
-
-    return text
-
-def writeToFile( data, substring):
-    f = open("output.txt", "w")
-    substring = str(substring).replace("\n", "\\n")
-    f.write(substring + "\n")
-    f.write(str(data)+"\n")
-    f.close()
+            for char in self.contextTable[expression]:
+                occurences = self.contextTable[expression][char]
         
-def init(filename, k):
-    f  = open(filename, 'r')
-    data = f.read()
-    expressions_dict = getExpressions(data,k)
-    calculateProbability(expressions_dict, 0.01)
+                self.probabilitiesTable[expression][char] = (occurences + self.a) / (total + (self.a * len(self.probabilitiesTable[expression])))
+        
+        
+        
+   
 
-    text = generateText(expressions_dict, k)
-    print("TEXT " + text)
+    def writeToFile(string, substring):
+        f = open("output.txt", "w")
+        substring = str(substring).replace("\n", "\\n")
+        f.write(substring + "\n")
+        f.write(str(string)+"\n")
+        f.close()
     
 
-init("sherlock.txt", 3)
+    def getNextChar(self, expression):
+ 
+        selectedChar = random()
+        initialValue = 0
+        # print(selectedChar)
+        if expression not in self.probabilitiesTable:
+            self.probabilitiesTable[expression]= dict.fromkeys(self.alphabet, (self.a) / ((self.a * len(self.alphabet)))) 
+        # print(sorted(self.probabilitiesTable[expression]))
+        for char in sorted(self.probabilitiesTable[expression]):
+            #print(char +"+= " + str(initialValue) + ", " +str(initialValue+self.probabilitiesTable[expression][char]))
+            if initialValue<=selectedChar < initialValue+self.probabilitiesTable[expression][char]:
+                return char
+            initialValue+= self.probabilitiesTable[expression][char]
+
+    def __init__(self, filename="sherlock.txt", a=0.1, k=1):
+        f  = open(filename, 'r')
+        self.data = f.read()
+        self.a = a
+        self.k = k
+    
+
