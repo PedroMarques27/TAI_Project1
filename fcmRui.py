@@ -34,7 +34,7 @@ def fill_table(file_text, alphabet, k, table):
 
         if type(table)==dict:
             if sequence not in table:
-                table[sequence] = {c:1}
+                table[sequence] = {char:1}
             else:
                 if char not in table[sequence]:
                     table[sequence][char] = 1
@@ -60,7 +60,7 @@ def get_index(sequence, alphabet, k):
 
 
 def calculate_prob_table(table, alphabet, alpha):
-
+    #versao de dicionario?
     a_size = len(alphabet)
     prob_table = []
 
