@@ -89,8 +89,9 @@ def execute_fcm(file_name, k , alpha):
 
     prob_table, total_entrophy = calc_prob_entrophy_table(table, alphabet, alpha, total_sequences)
 
-    print(total_entrophy)
+    print("Total entropy of the text: " + str(total_entrophy))
 
+    return alphabet, prob_table, total_entrophy
 
 def main():
     args = sys.argv[1:]
