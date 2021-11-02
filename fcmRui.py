@@ -1,6 +1,7 @@
 import sys
 import re
 from pathlib import Path
+import math
 
 def format_text(file_name):
     full_text = Path(file_name).read_text()
@@ -59,20 +60,37 @@ def get_index(sequence, alphabet, k):
     return index
 
 
-def calculate_prob_table(table, alphabet, alpha):
+def calc_prob_entrophy_table(table, alphabet, alpha, total_sequences):
     #versao de dicionario?
     a_size = len(alphabet)
     prob_table = []
 
+    total_entrophy = 0
+
     for row in table:
         total = sum(row)
-        prob_table.append([ ( (x+alpha) / (total+(alpha*a_size)) ) for x in row])
+        prob_row = [ ( (x+alpha) / (total+(alpha*a_size)) ) for x in row]
+        prob_table.append(prob_row)
+        ent_row = -sum([x*math.log2(x) for x in prob_row])
+        total_entrophy += (total/total_sequences) * ent_row
 
-    return prob_table
+    return prob_table, total_entrophy
 
-def calculate_entrophy_table(prob_table, alphabet, alpha):
+def execute_fcm(file_name, k , alpha):
 
-    return
+    file_text = format_text(file_name)
+    alphabet = get_alphabet(file_text)
+
+    table = make_table(alphabet, k)
+
+    table = fill_table(file_text, alphabet, k, table)
+
+    total_sequences = len(file_text)-k
+
+    prob_table, total_entrophy = calc_prob_entrophy_table(table, alphabet, alpha, total_sequences)
+
+    print(total_entrophy)
+
 
 def main():
     args = sys.argv[1:]
@@ -82,21 +100,9 @@ def main():
 
     file_name = args[0]
     k = 1 if len(args)<2 else int(args[1])
-    alpha = 1 if len(args)<3 else int(args[2])
+    alpha = 1 if len(args)<3 else float(args[2])
 
-    file_text = format_text(file_name)
-    alphabet = get_alphabet(file_text)
-    print(alphabet)
-    table = make_table(alphabet, k)
-
-    table = fill_table(file_text, alphabet, k, table)
-
-    print(table)
-
-    prob_table = calculate_prob_table(table, alphabet, alpha)
-    
-    print(prob_table)
-
+    execute_fcm(file_name, k, alpha)
 
 
 if __name__== "__main__":
