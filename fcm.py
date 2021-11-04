@@ -5,7 +5,7 @@ from pathlib import Path
 def make_table(alphabet, k):
     occupied_space = get_table_space(alphabet, k)
     a_size = len(alphabet)
-    if occupied_space <= 256:
+    if occupied_space <= 1024:
         table = [[0] * a_size for x in range(a_size ** k)]
     else:
         table = {}
