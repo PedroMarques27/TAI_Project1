@@ -17,15 +17,15 @@ def generator(filename, alpha, k, length, initialText):
     if not initialText:
         initialText = get_initial_sequence(alphabet, k)
     print('Total entropy: ' + str(entropy))
-    while len(initialText)<k:
-        lastKcharacters = initialText[-k:]
-        initialText+=get_next_char(probabilities_table,alphabet=alphabet, context=lastKcharacters, k=1, a=alpha)
+
     i = 0
 
     while i <  length:
         i += 1
         lastKcharacters = initialText[-k:]
+
         initialText+=get_next_char(probabilities_table, alphabet=alphabet, context=lastKcharacters, k=k, a=alpha)
+
     writeToFile(initialText)
 
 def get_next_char(probabilities_table,alphabet, context, k, a):
@@ -33,18 +33,18 @@ def get_next_char(probabilities_table,alphabet, context, k, a):
     initial_value = 0
     if type(probabilities_table) == dict:
         if context not in probabilities_table:
-            probabilities_table[context]={}
-        for char in alphabet:
-            if char in probabilities_table[context]:
-                prob = probabilities_table[context][char]
-            else:
-                prob = a / (a * len(alphabet))
-
+            return random.choice(alphabet)
+        for char in probabilities_table[context]:
+            prob = probabilities_table[context][char]
             if initial_value <= selected_char < initial_value + prob:
                 return char
             initial_value += prob
+        return random.choice([x for x in alphabet if x not in probabilities_table[context]])
+
+
     else:
         index = int(get_index(context, alphabet, k=k))
+
         for i in range(len(alphabet)):
             if initial_value <= selected_char < initial_value + probabilities_table[index][i]:
                 return alphabet[i]
