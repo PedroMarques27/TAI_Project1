@@ -1,12 +1,8 @@
 import math
-import re, copy
-from typing import Text
-import sys
-import time
-from random import random
+import re
 from pathlib import Path
 
-def make_table(data, alphabet, k):
+def make_table(alphabet, k):
     occupied_space = get_table_space(alphabet, k)
     a_size = len(alphabet)
     if occupied_space <= 256:
@@ -18,6 +14,7 @@ def make_table(data, alphabet, k):
 def get_normalized_string(data):
     # remove all but words and spaces
     data = re.sub(r'[^a-zA-Z ]+', '', data.lower())
+
     data = re.sub("\s\s+", " ", data)
     return data
 
@@ -94,7 +91,7 @@ def fcm(filename="sherlock.txt", a=0.1, k=1):
     data = Path(filename).read_text()
     data = get_normalized_string(data)
     alphabet = get_alphabet(data)
-    table = make_table(data,alphabet,k)
+    table = make_table(alphabet,k)
     table = get_expressions_from_data(data, table=table, alphabet=alphabet, k=k)
     probabilities_table, entropy = get_probability_table(data, table, alphabet, k, a)
     return table, probabilities_table,alphabet, entropy
