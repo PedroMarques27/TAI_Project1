@@ -5,10 +5,11 @@ from pathlib import Path
 def make_table(alphabet, k):
     occupied_space = get_table_space(alphabet, k)
     a_size = len(alphabet)
-    if occupied_space <= 256:
+    if occupied_space <= 1024:
         table = [[0] * a_size for x in range(a_size ** k)]
     else:
         table = {}
+    print("Using a "+str(type(table)))
     return table
 
 def get_normalized_string(data):
@@ -20,6 +21,7 @@ def get_normalized_string(data):
 
 def get_alphabet(data):
     alphabet = sorted(list(set(data)))
+    print("ç")
     return alphabet
 
 def get_expressions_from_data(data, table, alphabet, k):

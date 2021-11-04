@@ -13,7 +13,9 @@ def get_initial_sequence(alphabet, k):
     return sequence
 
 def generator(filename, alpha, k, length, initialText):
-    table, probabilities_table,alphabet, entropy = fcm(filename, alpha,k)
+    table, probabilities_table, alphabet, entropy = fcm(filename, alpha,k)
+    if not initialText:
+        initialText = get_initial_sequence(alphabet, k)
     print('Total entropy: ' + str(entropy))
     while len(initialText)<k:
         lastKcharacters = initialText[-k:]
@@ -23,10 +25,10 @@ def generator(filename, alpha, k, length, initialText):
     while i <  length:
         i += 1
         lastKcharacters = initialText[-k:]
-        initialText+=get_next_char(probabilities_table,alphabet=alphabet, context=lastKcharacters, k=k, a=alpha)
+        initialText+=get_next_char(probabilities_table, alphabet=alphabet, context=lastKcharacters, k=k, a=alpha)
     writeToFile(initialText)
 
-def get_next_char(probabilities_table,alphabet, context,k, a):
+def get_next_char(probabilities_table,alphabet, context, k, a):
     selected_char = random.random()
     initial_value = 0
     if type(probabilities_table) == dict:
@@ -60,11 +62,11 @@ def main():
         raise Exception("Too little arguments")
 
     file_name = args[0]
-    k = 1 if len(args)<5 else int(args[1])
-    alpha = 1 if len(args)<5 else float(args[2])
-    length = 1 if len(args)<5 else float(args[3])
+    k = 1 if len(args)<2 else int(args[1])
+    alpha = 1 if len(args)<3 else float(args[2])
+    length = 1000 if len(args)<4 else float(args[3])
 
-    initalText = " " if len(args)<5 else str(args[4])
+    initalText = None if len(args)<5 else str(args[4])
 
     starttime = time.time()
     generator(file_name, k=k, alpha=alpha, length=length, initialText=initalText)
