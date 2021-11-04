@@ -1,10 +1,8 @@
 import sys
 
-from fcm import FcmClass
 import time
 import random
-from random import randint
-
+from fcm import fcm, get_index
 
 def get_initial_sequence(alphabet, k):
     sequence = ""
@@ -13,21 +11,43 @@ def get_initial_sequence(alphabet, k):
         sequence += random.choice(alphabet)
 
     return sequence
-def generator(filename, alpha, k):
-    fcm = FcmClass(filename, alpha,k)
-    fcm.get_expressions_from_data()
-    fcm.get_probability_table()
-    print('Total entropy: ' + str(fcm.entropy))
 
-    text = get_initial_sequence(fcm.alphabet, k)
+def generator(filename, alpha, k):
+
+    table, probabilities_table,alphabet, entropy = fcm(filename, alpha,k)
+    print('Total entropy: ' + str(entropy))
+
+    text = get_initial_sequence(alphabet, k)
 
 
     i = 0
     while i < 1000:
         i += 1
         lastKcharacters = text[-k:]
-        text+=fcm.get_next_char(lastKcharacters)
+        text+=get_next_char(probabilities_table,alphabet=alphabet, context=text, k=k, a=alpha)
     writeToFile(text)
+
+def get_next_char(probabilities_table,alphabet, context,k, a):
+    selected_char = random.random()
+    initial_value = 0
+    if type(probabilities_table) == dict:
+        if context not in probabilities_table:
+            probabilities_table[context]={}
+        for char in alphabet:
+            if char in probabilities_table[context]:
+                prob = probabilities_table[context][char]
+            else:
+                prob = a / (a * len(alphabet))
+
+            if initial_value <= selected_char < initial_value + prob:
+                return char
+            initial_value += prob
+    else:
+        index = int(get_index(context, alphabet, k=k))
+        for i in range(len(alphabet)):
+            if initial_value <= selected_char < initial_value + probabilities_table[index][i]:
+                return alphabet[i]
+            initial_value += probabilities_table[index][i]
 
 def writeToFile(string):
     f = open("output.txt", "w", encoding='utf-8')
@@ -35,7 +55,6 @@ def writeToFile(string):
     f.close()
 
 def main():
-    '''
     args = sys.argv[1:]
 
     if len(args)==0:
@@ -45,28 +64,11 @@ def main():
     k = 1 if len(args)<2 else int(args[1])
     alpha = 1 if len(args)<3 else float(args[2])
 
-    generator(file_name, k, alpha)
-    '''
-    print('-'*22)
     starttime = time.time()
-    generator("sherlock.txt", 0.1, 3)
-    print('Time:' + str(time.time() - starttime)+"s")
-    print('-'*22)
-    starttime = time.time()
-    generator("sherlock.txt", 0.1, 4)
-    print('Time:' + str(time.time() - starttime)+"s")
-    print('-'*22)
-    starttime = time.time()
-    generator("sherlock.txt", 0.1, 5)
-    print('Time:' + str(time.time() - starttime)+"s")
-    print('-'*22)
-    starttime = time.time()
-    generator("sherlock.txt", 0.1, 6)
-    print('Time:' + str(time.time() - starttime)+"s")
-    print('-'*22)
-    starttime = time.time()
-    generator("sherlock.txt", 0.1, 7)
-    print('Time:' + str(time.time() - starttime)+"s")
-    print('-'*22)
+    generator(file_name, k=k, alpha=alpha)
+    print('Time:' + str(time.time() - starttime) + "s")
+    print('-' * 22)
+
+
 if __name__== "__main__":
     main()

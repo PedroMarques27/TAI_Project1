@@ -28,7 +28,7 @@ def make_table(alphabet, k):
     return table
 
 def fill_table(file_text, alphabet, k, table):
-
+    t1 = time.time()
     for i in range(len(file_text)-k):
         sequence = file_text[i:i+k]
         char = file_text[i+k]
@@ -43,7 +43,7 @@ def fill_table(file_text, alphabet, k, table):
                     table[sequence][char] += 1
         else:
             table[get_index(sequence, alphabet, k)][alphabet.index(char)] += 1 
-
+    print(time.time() - t1)
     return table
 
 

@@ -1,6 +1,6 @@
 import fcmRui
 import random
-import sys
+import sys, time
 
 def get_initial_sequence(alphabet, k):
 
