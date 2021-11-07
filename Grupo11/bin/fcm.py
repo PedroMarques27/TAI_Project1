@@ -58,7 +58,7 @@ def get_table_space(alphabet, k):
     a_size = len(alphabet)
     return (a_size ** k) * a_size * 16 / 8 / 1024 / 1024
 
-def get_probability_table(data, table,alphabet, k, a):
+def get_probability_table(data, table, alphabet, k, a):
     entropy = 0
     total_sequences = len(data) - k
 

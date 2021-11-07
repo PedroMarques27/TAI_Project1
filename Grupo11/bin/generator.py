@@ -26,9 +26,9 @@ def generator(filename, alpha, k, length, initialText):
 
         initialText+=get_next_char(probabilities_table, alphabet=alphabet, context=lastKcharacters, k=k, a=alpha)
 
-    writeToFile(initialText)
+    write_to_file(initialText)
 
-def get_next_char(probabilities_table,alphabet, context, k, a):
+def get_next_char(probabilities_table, alphabet, context, k, a):
     selected_char = random.random()
     initial_value = 0
     if type(probabilities_table) == dict:
@@ -53,7 +53,7 @@ def get_next_char(probabilities_table,alphabet, context, k, a):
                 return i[1]
             initial_value += i[0]
 
-def writeToFile(string):
+def write_to_file(string):
     f = open("output.txt", "w", encoding='utf-8')
     f.write(str(string) + "\n")
     f.close()
