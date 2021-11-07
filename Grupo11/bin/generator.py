@@ -34,8 +34,9 @@ def get_next_char(probabilities_table, alphabet, context, k, a):
     if type(probabilities_table) == dict:
         if context not in probabilities_table:
             return random.choice(alphabet)
-        for char in probabilities_table[context]:
-            prob = probabilities_table[context][char]
+        probs = {k: v for k, v in sorted( probabilities_table[context].items(), key=lambda item: item[1], reverse=True)}
+        for char in probs:
+            prob = probs[char]
             if initial_value <= selected_char < initial_value + prob:
                 return char
             initial_value += prob
