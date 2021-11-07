@@ -44,11 +44,14 @@ def get_next_char(probabilities_table,alphabet, context, k, a):
 
     else:
         index = int(get_index(context, alphabet, k=k))
+        lista =list( zip(probabilities_table[index], alphabet))
 
-        for i in range(len(alphabet)):
-            if initial_value <= selected_char < initial_value + probabilities_table[index][i]:
-                return alphabet[i]
-            initial_value += probabilities_table[index][i]
+        lista.sort(reverse=True)
+  
+        for i in lista:
+            if initial_value <= selected_char < initial_value + i[0]:
+                return i[1]
+            initial_value += i[0]
 
 def writeToFile(string):
     f = open("output.txt", "w", encoding='utf-8')
