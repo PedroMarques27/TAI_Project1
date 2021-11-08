@@ -5,6 +5,7 @@ from pathlib import Path
 def make_table(alphabet, k):
     occupied_space = get_table_space(alphabet, k)
     a_size = len(alphabet)
+
     if occupied_space <= 1024:
         table = [[0] * a_size for x in range(a_size ** k)]
     else:
@@ -88,7 +89,8 @@ def get_probability_table(data, table, alphabet, k, a):
 
 
 def fcm(filename="sherlock.txt", a=0.1, k=1):
-    data = Path(filename).read_text()
+
+    data = Path("../example/"+filename).read_text(encoding='utf-8')
     data = get_normalized_string(data)
     alphabet = get_alphabet(data)
     table = make_table(alphabet,k)
