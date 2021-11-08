@@ -2,7 +2,7 @@ import sys
 
 import time
 import random
-from fcm import fcm, get_index
+from fcm import fcm, get_index, get_normalized_string
 
 def get_initial_sequence(alphabet, k):
     sequence = ""
@@ -16,6 +16,8 @@ def generator(filename, alpha, k, length, initialText):
     table, probabilities_table, alphabet, entropy = fcm(filename, alpha,k)
     if not initialText:
         initialText = get_initial_sequence(alphabet, k)
+    else:
+        initialText = get_normalized_string(initialText)
     print('Total entropy: ' + str(entropy))
 
     i = 0
@@ -55,7 +57,7 @@ def get_next_char(probabilities_table, alphabet, context, k, a):
             initial_value += i[0]
 
 def write_to_file(string):
-    f = open("output.txt", "w", encoding='utf-8')
+    f = open("../src/output.txt", "w", encoding='utf-8')
     f.write(str(string) + "\n")
     f.close()
 
