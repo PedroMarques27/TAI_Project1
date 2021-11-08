@@ -1,19 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="559ac7ed-e3e3-418c-832b-143bfd80acba" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/.gitignore" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Grupo11/bin/generator.py" beforeDir="false" afterPath="$PROJECT_DIR$/Grupo11/bin/generator.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Grupo11/bin/output.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/bible.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/example.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/fcmRui.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/generatorRui.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/output.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/quim.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/small_text.txt" beforeDir="false" />
-    </list>
+    <list default="true" id="559ac7ed-e3e3-418c-832b-143bfd80acba" name="Default Changelist" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -67,7 +55,7 @@
       <option name="presentableId" value="Default" />
       <updated>1636408708560</updated>
       <workItem from="1636408712425" duration="193000" />
-      <workItem from="1636409137202" duration="57000" />
+      <workItem from="1636409137202" duration="236000" />
     </task>
     <servers />
   </component>
@@ -87,6 +75,6 @@
     <option name="oldMeFiltersMigrated" value="true" />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
-    <SUITE FILE_PATH="coverage/TAI_Project1$generator.coverage" NAME="generator Coverage Results" MODIFIED="1636408881966" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/Grupo11/bin" />
+    <SUITE FILE_PATH="coverage/TAI_Project1$generator.coverage" NAME="generator Coverage Results" MODIFIED="1636409194586" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/Grupo11/bin" />
   </component>
 </project>
